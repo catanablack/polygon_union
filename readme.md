@@ -197,7 +197,7 @@ Each step demonstrates a key feature of the module, and the corresponding figure
 ---
 ## Class Diagram
 
-```mermaid
+```
 +-----------------------------------+
 |   simple_polygon                  |
 +-----------------------------------+
