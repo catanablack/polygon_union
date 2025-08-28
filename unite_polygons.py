@@ -480,6 +480,23 @@ class complex_polygon:
         read_polygon_arrays = [loaded[f"arr_{i}"] for i in range(len(loaded.files))]
         log.info(f"Loaded in type: {type(read_polygon_arrays)} with {len(read_polygon_arrays)} polygons from {file_path}")
         self.__init__(read_polygon_arrays)
+    
+    def export_to_npz_file(self, file_path: str="./output/polygon_data.npz"):
+        """
+        Exports the polygon data to a NumPy .npz file.
+        Args:
+            file_path (str): The path where the .npz file will be saved.
+        Saves:
+            The method saves each polygon's vertices as separate arrays in the .npz file,
+            named in the format 'arr_{i}'.
+        Side Effects:
+            Creates the directory for the file if it does not exist.
+            Logs an informational message upon successful saving.
+        """
+
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        np.savez(file_path, **{f"arr_{i}": poly.vertices for i, poly in enumerate(self.polygons)})
+        log.info(f"Polygon data exported to {file_path}")
 
 class multi_complex_polygon:
     def __init__(self, complex_polygons: list=[]):
@@ -557,12 +574,38 @@ class multi_complex_polygon:
             return self.complex_polygons[index]
         return None
 
+    def export_to_npz_file(self, file_path: str="./output/multi_polygon_data.npz"):
+        """
+        Exports all complex polygons in the collection to individual NPZ files.
+
+        Each polygon is saved as a separate NPZ file in the specified directory.
+        The directory is created if it does not exist. The filenames are generated
+        as 'poly_{i}.npz', where 'i' is the index of the polygon in the collection.
+
+        Args:
+            file_path (str): Path to the output directory or NPZ file. Defaults to
+                './output/multi_polygon_data.npz'. The directory portion of this path
+                is used for saving the files.
+
+        Side Effects:
+            Creates the output directory if it does not exist.
+            Writes NPZ files for each complex polygon in the collection.
+            Logs the export operation.
+        """
+
+        file_path = os.path.dirname(file_path) + "/"
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        for i, cpoly in enumerate(self.complex_polygons):
+            cpoly.export_to_npz_file(file_path=file_path+f"/poly_{i}.npz")
+        log.info(f"Multi-complex polygon data exported to {file_path}")
+
 def main():
     parser = argparse.ArgumentParser(description='A simple program that processes 2 polygon files (npz) and applied either union or interserction')
     
     parser.add_argument('-p1', '--poly1', help='Specify the first polygon file (npz)', required=True)
     parser.add_argument('-p2', '--poly2', help='Specify the second polygon file (npz)', required=True)
     parser.add_argument('-o', '--output', help='Specify an output directory to save the results', default="./output")
+    parser.add_argument('-of', '--output_file', help='Specify an output file name to save the results', default=None)
     parser.add_argument('-op', '--operation', help='Specify the operation to perform: union or intersection', choices=['union', 'intersection'], default='union')
     parser.add_argument('-s', '--simplify', help='Apply polygon simplification before operation', action='store_true')
     parser.add_argument('-dt', '--distance_threshold', help='Distance threshold for polygon simplification', type=float, default=1e-0)
@@ -596,6 +639,10 @@ def main():
     elif args.operation == 'intersection':
         result = poly1.intersect_polygons(poly2)
     result.plot_polygon(title_legend=f"{args.operation} of Polygon 1 and Polygon 2", save_path=os.path.join(args.output, f"{args.operation}_polygon1_polygon2.png"))
+
+    if args.output_file is not None:
+        output_file_path = os.path.join(args.output, args.output_file)
+        result.export_to_npz_file(file_path=output_file_path)
 
 if __name__ == "__main__":
     main()   
