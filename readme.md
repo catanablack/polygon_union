@@ -119,7 +119,7 @@ poly1 = complex_polygon([manual_poly])
 poly1.rotate(angle_deg=3, origin=(24,42))
 poly1.plot_polygon(title_legend="Polygon 1")
 ```
-![Polygon 1](./output_exmple/polygon1.png)
+![Polygon 1](./output_example/polygon1.png)
 
 ### 2. Load and Plot Polygon #2 from File
 
@@ -130,7 +130,7 @@ poly2 = complex_polygon()
 poly2.read_polygon_from_npz_file("./NumpyFiles/arrays_90.npz")
 poly2.plot_polygon(plot_vertices=True, title_legend="Polygon 2")
 ```
-![Polygon 2](./output_exmple/polygon2.png)
+![Polygon 2](./output_example/polygon2.png)
 
 ### 3. Simplify Polygon #2
 
@@ -140,7 +140,7 @@ Simplify polygon #2 to reduce the number of vertices (using a larger distance th
 poly2.apply_polygon_simplification(distance_threshold=1e-0)
 poly2.plot_polygon(plot_vertices=True, title_legend="Polygon 2 after simplification")
 ```
-![Polygon 2 after simplification](./output_exmple/polygon2_simplified.png)
+![Polygon 2 after simplification](./output_example/polygon2_simplified.png)
 
 ### 4. Union of Polygon #1 and #2
 Compute the union of polygons #1 and #2.
@@ -152,7 +152,7 @@ result.plot_polygon(title_legend="Union of Polygon 1 and 2")
 if isinstance(result, multi_complex_polygon):
     result = result.get_polygon(0)
 ```
-![Union of Polygon 1 and 2](./output_exmple/union_polygon1_polygon2.png)
+![Union of Polygon 1 and 2](./output_example/union_polygon1_polygon2.png)
 
 ### 5. Intersection of Polygon #1 and #2
 Compute the intersection of polygons #1 and #2.
@@ -164,7 +164,7 @@ result_int.plot_polygon(title_legend="Intersection of Polygon 1 and 2")
 if isinstance(result_int, multi_complex_polygon):
     result_int = result_int.get_polygon(0)
 ```
-![Intersection of Polygon 1 and 2](./output_exmple/intersection_polygon1_polygon2.png)
+![Intersection of Polygon 1 and 2](./output_example/intersection_polygon1_polygon2.png)
 
 ### 6. Create and Rotate Polygon #3
 Create a third polygon from the manual definition and rotate it by -25 degrees.
@@ -180,7 +180,7 @@ Compute the union of polygon #3 with the intersection result from step 5.
 ```python
 poly3.unify_polygons(result_int).plot_polygon(title_legend="Union of Polygon 3 and Intersection of Polygon 1 and 2 (comp 1)")
 ```
-![Union of Polygon 3 and Intersection of Polygon 1 and 2](./output_exmple/union_polygon3_intersection_polygon1_polygon2.png)
+![Union of Polygon 3 and Intersection of Polygon 1 and 2](./output_example/union_polygon3_intersection_polygon1_polygon2.png)
 ### Summary
 Each step demonstrates a key feature of the module, and the corresponding figure is saved for visualization and further analysis.
 
