@@ -72,6 +72,9 @@ python unite_polygons.py -p1 <path_to_polygon1.npz> -p2 <path_to_polygon2.npz> [
 - `-o`, `--output`  
   Output directory to save the result images (default: `./output`).
 
+- `-of`, `--output_file`   
+  Specify an output file name to save the results (npz) (default: `None`).
+
 - `-op`, `--operation`  
   Operation to perform: `union` or `intersection` (default: `union`).
 
